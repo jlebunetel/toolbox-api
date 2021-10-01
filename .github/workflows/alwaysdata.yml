@@ -1,0 +1,31 @@
+name: Deploy to alwaysdata
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  deploy:
+    name: "Deploy to alwaysdata"
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Configure SSH
+      env:
+        SSH_USER: ${{ secrets.ALWAYSDATA_SSH_USER }}
+        SSH_KEY: ${{ secrets.ALWAYSDATA_SSH_KEY }}
+        SSH_HOST: ${{ secrets.ALWAYSDATA_SSH_HOST }}
+      run: |
+        mkdir -p ~/.ssh/
+        echo "$SSH_KEY" > ~/.ssh/alwaysdata.key
+        chmod 600 ~/.ssh/alwaysdata.key
+        cat >>~/.ssh/config <<END
+        Host alwaysdata
+          HostName $SSH_HOST
+          User $SSH_USER
+          IdentityFile ~/.ssh/alwaysdata.key
+          StrictHostKeyChecking no
+        END
+    - name: Update code and dependencies
+      run: ssh alwaysdata "cd ~/github/jlebunetel/toolbox-api/; git pull; make install;"
