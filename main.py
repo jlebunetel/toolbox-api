@@ -48,6 +48,7 @@ async def ddns(
 ):
     """Sets my DDNS"""
     # https://api.alwaysdata.com/v1/record/doc/
+    # Synology requires that the response body contains the string "good"
 
     if token != DDNS_TOKEN:
         raise HTTPException(status_code=403, detail="token not valid!")
@@ -88,4 +89,5 @@ async def ddns(
         "name": name,
         "type": "A",
         "value": ip,
+        "detail": "good",
     }
