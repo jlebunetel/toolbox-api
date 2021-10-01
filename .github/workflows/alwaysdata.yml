@@ -38,4 +38,4 @@ jobs:
         APIKEY: ${{ secrets.ALWAYSDATA_APIKEY }}
         ACCOUNT: ${{ secrets.ALWAYSDATA_ACCOUNT }}
         SITE: ${{ secrets.ALWAYSDATA_SITE }}
-      run: curl -X POST --basic --user "$APIKEY account=$SITE:" https://api.alwaysdata.com/v1/site/$SITE/restart/
+      run: curl -X POST --basic --user "$APIKEY account=$ACCOUNT:" https://api.alwaysdata.com/v1/site/$SITE/restart/
