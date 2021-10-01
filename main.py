@@ -1,4 +1,5 @@
-from fastapi import FastAPI, Request
+from fastapi import FastAPI, Request, Header
+from typing import Optional
 
 app = FastAPI()
 
@@ -9,6 +10,15 @@ async def root():
 
 
 @app.get("/api/v1/showmyip/")
-async def showmyip(request: Request):
+async def showmyip(
+    request: Request,
+    user_agent: Optional[str] = Header(None),
+    x_real_ip: Optional[str] = Header(None),
+):
     ip = request.client.host
-    return {"ip": ip}
+    return {
+        "ip": ip,
+        "headers": request["headers"],
+        "User-Agent": user_agent,
+        "X-Real-IP": x_real_ip,
+    }
