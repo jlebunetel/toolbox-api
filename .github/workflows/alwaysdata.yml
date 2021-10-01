@@ -37,4 +37,4 @@ jobs:
       env:
         APIKEY: ${{ secrets.ALWAYSDATA_APIKEY }}
         SITE: ${{ secrets.ALWAYSDATA_SITE }}
-      run: curl -X POST --basic --user "$APIKEY:" https://api.alwaysdata.com/v1/$SITE/1234/restart/
+      run: curl -X POST --basic --user "$APIKEY:" https://api.alwaysdata.com/v1/site/$SITE/restart/
