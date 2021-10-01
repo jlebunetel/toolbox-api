@@ -30,11 +30,11 @@ jobs:
 
     - name: Update code and dependencies
       env:
-        REPOSITORY: ${{ ALWAYSDATA_REPOSITORY }}
+        REPOSITORY: ${{ secrets.ALWAYSDATA_REPOSITORY }}
       run: ssh alwaysdata "cd ~/$REPOSITORY; git pull; make install;"
 
     - name: Restart Uvicorn
       env:
-        APIKEY: ${{ ALWAYSDATA_APIKEY }}
-        SITE: ${{ ALWAYSDATA_SITE }}
+        APIKEY: ${{ secrets.ALWAYSDATA_APIKEY }}
+        SITE: ${{ secrets.ALWAYSDATA_SITE }}
       run: curl -X POST --basic --user "$APIKEY:" https://api.alwaysdata.com/v1/$SITE/1234/restart/
