@@ -2,7 +2,7 @@ default: help
 
 .PHONY: venv
 venv: ## Creates a virtual environment.
-	python -m venv venv
+	python3.9 -m venv venv
 
 .PHONY: install
 install: ## Installs or updates dependencies.
