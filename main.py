@@ -2,6 +2,8 @@ import json
 import os
 import requests
 from fastapi import FastAPI, Header, HTTPException, Request
+from fastapi.responses import HTMLResponse
+from fastapi.templating import Jinja2Templates
 from typing import Optional
 
 if os.path.exists(".env"):
@@ -16,6 +18,29 @@ DDNS_TOKEN = str(os.environ["DDNS_TOKEN"])
 
 app = FastAPI()
 
+templates = Jinja2Templates(directory="templates")
+
+
+@app.get("/", response_class=HTMLResponse)
+async def index(
+    request: Request,
+    x_real_ip: Optional[str] = Header(None),
+):
+    """Returns the homepage"""
+
+    # alwaysdata add to headers X-Real-IP, which takes the value of the client’s IP
+    # address, see: https://help.alwaysdata.com/en/sites/http-stack/
+
+    ip = x_real_ip if x_real_ip else request.client.host
+
+    return templates.TemplateResponse(
+        "index.html",
+        {
+            "request": request,
+            "ip": ip,
+        },
+    )
+
 
 @app.get("/api/v1/")
 async def root():
@@ -25,11 +50,13 @@ async def root():
 @app.get("/api/v1/showmyip/")
 async def showmyip(
     request: Request,
-    # alwaysdata add to headers X-Real-IP, which takes the value of the client’s IP
-    # address, see: https://help.alwaysdata.com/en/sites/http-stack/
     x_real_ip: Optional[str] = Header(None),
 ):
     """Returns my IP address"""
+
+    # alwaysdata add to headers X-Real-IP, which takes the value of the client’s IP
+    # address, see: https://help.alwaysdata.com/en/sites/http-stack/
+
     ip = x_real_ip if x_real_ip else request.client.host
     return {"ip": ip}
 
@@ -47,6 +74,7 @@ async def ddns(
     token: str = "",
 ):
     """Sets my DDNS"""
+
     # https://api.alwaysdata.com/v1/record/doc/
     # Synology requires that the response body contains the string "good"
 
