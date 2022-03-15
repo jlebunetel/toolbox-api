@@ -7,8 +7,8 @@ venv: ## Creates a virtual environment.
 .PHONY: install
 install: ## Installs or updates dependencies.
 	venv/bin/pip install --upgrade pip
-	venv/bin/pip install pip-tools
-	venv/bin/pip-compile
+	venv/bin/pip install --upgrade pip-tools
+	venv/bin/pip-compile --upgrade
 	venv/bin/pip-sync
 
 .PHONY: serve

@@ -1,4 +1,10 @@
+# toolbox-api
 fastapi
 uvicorn[standard]
 requests
 jinja2
+
+# dev
+black
+flake8
+pylint
