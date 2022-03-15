@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Toolbox</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 
 <body>
@@ -17,7 +17,7 @@
                 <h1 class="title">
                     <span class="icon-text">
                         <span class="icon">
-                            <i class="fas fa-toolbox"></i>
+                            <i class="fa-solid fa-toolbox"></i>
                         </span>
                         <span>Toolbox</span>
                     </span>
@@ -26,6 +26,45 @@
                     Your IP address is: <span class="has-text-weight-bold has-text-link">{{ ip }}</span>
                 </p>
             </div>
+        </div>
+
+        <div class="hero-foot">
+            <nav class="tabs is-small is-centered">
+                <div class="container">
+                    <ul>
+                        <li class="is-active">
+                            <a>
+                                <span class="icon-text">
+                                    <span class="icon">
+                                        <i class="fa-solid fa-home">    </i>
+                                    </span>
+                                    <span>Home</span>
+                                </span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/api/v1/">
+                                <span class="icon-text">
+                                    <span class="icon">
+                                        <i class="fa-solid fa-database">    </i>
+                                    </span>
+                                    <span>API</span>
+                                </span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/docs">
+                                <span class="icon-text">
+                                    <span class="icon">
+                                        <i class="fa-solid fa-book">    </i>
+                                    </span>
+                                    <span>Docs</span>
+                                </span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
         </div>
     </section>
 </body>
