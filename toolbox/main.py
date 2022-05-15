@@ -1,13 +1,15 @@
 import json
 import requests
 
-from fastapi import FastAPI, Header, HTTPException, Request
+from fastapi import FastAPI, Header, HTTPException, Path, Request
 from fastapi.responses import FileResponse, HTMLResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from typing import Optional
+
 from toolbox import settings
-from toolbox.star import get_next_bus
+from toolbox.lametric import LaMetricFrame, LaMetricFrames
+from toolbox.star import City, get_next_bus
 
 app = FastAPI()
 
@@ -16,27 +18,24 @@ app.mount("/static", StaticFiles(directory=settings.STATIC_DIR), name="static")
 templates = Jinja2Templates(directory=settings.TEMPLATES_DIR)
 
 
-@app.get("/", response_class=HTMLResponse)
-async def index(
-    request: Request,
-    # alwaysdata add to headers X-Real-IP, which takes the value of the client’s IP
-    # address, see: https://help.alwaysdata.com/en/sites/http-stack/
-    x_real_ip: Optional[str] = Header(None),
-):
+@app.get("/", response_class=HTMLResponse, include_in_schema=False)
+async def index(request: Request):
     """Returns the homepage"""
-
-    ip = x_real_ip if x_real_ip else request.client.host
 
     return templates.TemplateResponse(
         "index.html",
         {
             "request": request,
-            "ip": ip,
+            "title": "Toolbox",
+            "author": "Julien Lebunetel",
+            "description": "A set of useful tools.",
+            "author_twitter_id": "@jlebunetel",
+            "site_url": "https://toolbox.blink-studio.com",
         },
     )
 
 
-@app.get("/favicon.ico", response_class=FileResponse)
+@app.get("/favicon.ico", response_class=FileResponse, include_in_schema=False)
 async def get_favicon():
     return FileResponse(settings.FAVICON)
 
@@ -66,7 +65,7 @@ async def showmyip(
     }
 
 
-# @app.get("/api/v1/ddns/")
+@app.get("/api/v1/ddns/", include_in_schema=False)
 async def ddns(
     request: Request,
     # alwaysdata add to headers X-Real-IP, which takes the value of the client’s IP
@@ -128,54 +127,60 @@ async def ddns(
     }
 
 
-@app.get("/api/v1/lametric/debug/")
-async def lametric_debug():
+@app.get(
+    "/api/v1/lametric/debug/",
+    response_model=LaMetricFrames,
+    response_model_exclude_none=True,
+)
+async def lametric_debug() -> LaMetricFrames:
     """LaMetric debug frames"""
 
-    # https://help.lametric.com/support/solutions/articles/6000225467-my-data-diy
-    # https://developer.lametric.com/icons
-
-    return {
-        "frames": [
-            {
-                "text": "Pikachu",
-                "icon": "5588",  # Pikachu
-            }
+    return LaMetricFrames(
+        frames=[
+            LaMetricFrame(
+                text="Pikachu",
+                icon="5588",
+            )
         ]
-    }
+    )
 
 
-@app.get("/api/v1/lametric/bus/{idarret}/")
-async def next_bus(
-    idarret: str,
+@app.get(
+    "/api/v1/lametric/cities/{city_id}/stops/{stop_id}/",
+    response_model=LaMetricFrames,
+    response_model_exclude_none=True,
+)
+async def lametric_next_bus(
+    city_id: City,
+    stop_id: str = Path(description="Timéo id", example="1056"),
     limit: int = 3,
-):
+) -> LaMetricFrames:
     """Displays bus information on LaMetric"""
 
-    horaires = get_next_bus(idarret=idarret, limit=limit)
+    horaires = get_next_bus(idarret=stop_id, limit=limit)
 
-    frames = [
-        {
-            "text": "bus",
-            "icon": "996",  # bus
-        }
-    ]
+    frames = LaMetricFrames(
+        frames=[
+            LaMetricFrame(
+                text="bus",
+                icon="996",
+            )
+        ],
+    )
 
     if horaires:
         for horaire in horaires:
-            frames.append(
-                {
-                    "text": " ".join([horaire.nomcourtligne, horaire.depart]),
-                }
+            frames.frames.append(
+                LaMetricFrame(
+                    text=" ".join([horaire.nomcourtligne, horaire.depart]),
+                )
             )
     else:
-        frames.append(
-            {
-                "text": "Pas d'information ...",
-                "icon": "625",  # Question
-            }
+        frames.frames.append(
+            LaMetricFrame(
+                text="Pas d'information ...",
+                icon="625",  # Question
+            )
         )
 
-    return {
-        "frames": frames,
-    }
+    return frames

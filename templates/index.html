@@ -1,24 +1,24 @@
 <!DOCTYPE html>
-<html>
+<html lang="en-US">
 
 <head>
     <meta charset="utf-8">
     <meta name="robots" content="noindex, nofollow">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Toolbox</title>
-    <meta name="description" content="A set of useful tools."></meta>
-    <meta name="author" content="Julien Lebunetel"></meta>
+    <title>{{ title }}</title>
+    <meta name="description" content="{{ description }}"></meta>
+    <meta name="author" content="{{ author }}"></meta>
 
-    <meta property="og:title" content="Toolbox"></meta>
-    <meta property="og:description" content="A set of useful tools."></meta>
+    <meta property="og:title" content="{{ title }}"></meta>
+    <meta property="og:description" content="{{ description }}"></meta>
     <meta property="og:type" content="website"></meta>
     <meta property="og:image" content="{{ url_for('static', path='/3823.jpg') }}"></meta>
-    <meta property="og:image:alt" content="A set of useful tools."></meta>
-    <meta property="og:url" content="https://toolbox.blink-studio.com/"></meta>
+    <meta property="og:image:alt" content="{{ description }}"></meta>
+    <meta property="og:url" content="{{ sit_url }}"></meta>
 
     <meta name="twitter:card" content="summary"></meta>
-    <meta name="twitter:creator" content="@jlebunetel"></meta>
+    <meta name="twitter:creator" content="{{ author_twitter_id }}"></meta>
 
     <link rel="icon" href="favicon.ico">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
@@ -36,41 +36,32 @@
                                 <span class="icon">
                                     <i class="fa-solid fa-toolbox"></i>
                                 </span>
-                                <span>Toolbox</span>
+                                <span>{{ title }}</span>
                             </span>
                         </h1>
+                        <h2 class="subtitle">{{ description }}</h2>
+
                         <figure class="image">
                             <img src="{{ url_for('static', path='/3823.jpg') }}" width="500">
+                            <figcaption class="is-italic is-size-7">
+                                <a class="has-text-grey" href="http://www.freepik.com">Designed by vectorpocket / Freepik</a>
+                            </figcaption>
                         </figure>
-                        <p class="subtitle">
-                            Your IP address is: <span class="has-text-weight-bold has-text-link">{{ ip }}</span>
-                        </p>
                     </div>
                 </div>
             </div>
         </div>
-
         <div class="hero-foot">
             <nav class="tabs is-centered">
                 <div class="container">
                     <ul>
                         <li class="is-active">
-                            <a>
+                            <a href="/">
                                 <span class="icon-text">
                                     <span class="icon">
-                                        <i class="fa-solid fa-home">    </i>
+                                        <i class="fa-solid fa-home"></i>
                                     </span>
                                     <span>Home</span>
-                                </span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="/api/v1/">
-                                <span class="icon-text">
-                                    <span class="icon">
-                                        <i class="fa-solid fa-database">    </i>
-                                    </span>
-                                    <span>API</span>
                                 </span>
                             </a>
                         </li>
@@ -78,9 +69,19 @@
                             <a href="/docs">
                                 <span class="icon-text">
                                     <span class="icon">
-                                        <i class="fa-solid fa-book">    </i>
+                                        <i class="fa-solid fa-database"></i>
                                     </span>
-                                    <span>Docs</span>
+                                    <span>API</span>
+                                </span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://github.com/jlebunetel/toolbox-api/">
+                                <span class="icon-text">
+                                    <span class="icon">
+                                        <i class="fa-brands fa-github"></i>
+                                    </span>
+                                    <span>GitHub</span>
                                 </span>
                             </a>
                         </li>

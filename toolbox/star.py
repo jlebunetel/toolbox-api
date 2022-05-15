@@ -2,10 +2,15 @@ import logging
 import requests
 
 from datetime import datetime
+from enum import Enum
 from pydantic import BaseModel, validator
 from typing import Union
 
 logger = logging.getLogger(__name__)
+
+
+class City(str, Enum):
+    rennes = "rennes"
 
 
 class Horaire(BaseModel):
