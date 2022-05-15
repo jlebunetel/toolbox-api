@@ -11,7 +11,7 @@ from toolbox.star import get_next_bus
 
 app = FastAPI()
 
-templates = Jinja2Templates(directory="templates")
+templates = Jinja2Templates(directory=settings.TEMPLATES_DIR)
 
 
 @app.get("/", response_class=HTMLResponse)
@@ -36,7 +36,7 @@ async def index(
 
 @app.get("/favicon.ico", response_class=FileResponse)
 async def get_favicon():
-    return FileResponse("favicon.ico")
+    return FileResponse(settings.FAVICON)
 
 
 @app.get("/api/v1/")
