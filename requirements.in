@@ -8,3 +8,4 @@ jinja2
 black
 flake8
 pylint
+rich

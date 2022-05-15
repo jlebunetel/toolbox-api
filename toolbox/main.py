@@ -7,6 +7,7 @@ from fastapi.templating import Jinja2Templates
 from typing import Optional
 
 from toolbox.settings import ACCOUNT, APIKEY, DDNS_TOKEN
+from toolbox.star import get_next_bus
 
 app = FastAPI()
 
@@ -118,16 +119,54 @@ async def ddns(
     }
 
 
-@app.get("/api/v1/lametric/")
-async def lametric():
-    """LaMetric frames"""
+@app.get("/api/v1/lametric/debug/")
+async def lametric_debug():
+    """LaMetric debug frames"""
 
     # https://help.lametric.com/support/solutions/articles/6000225467-my-data-diy
+    # https://developer.lametric.com/icons
 
     return {
         "frames": [
             {
-                "text": "LaMetric",
+                "text": "Pikachu",
+                "icon": "5588",  # Pikachu
             }
         ]
+    }
+
+
+@app.get("/api/v1/lametric/bus/{idarret}/")
+async def next_bus(
+    idarret: str,
+    limit: int = 3,
+):
+    """Displays bus information on LaMetric"""
+
+    horaires = get_next_bus(idarret=idarret, limit=limit)
+
+    frames = [
+        {
+            "text": "bus",
+            "icon": "996",  # bus
+        }
+    ]
+
+    if horaires:
+        for horaire in horaires:
+            frames.append(
+                {
+                    "text": " ".join([horaire.nomcourtligne, horaire.depart]),
+                }
+            )
+    else:
+        frames.append(
+            {
+                "text": "Pas d'information ...",
+                "icon": "625",  # Question
+            }
+        )
+
+    return {
+        "frames": frames,
     }
