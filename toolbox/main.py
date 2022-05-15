@@ -2,7 +2,7 @@ import json
 import requests
 
 from fastapi import FastAPI, Header, HTTPException, Request
-from fastapi.responses import HTMLResponse
+from fastapi.responses import FileResponse, HTMLResponse
 from fastapi.templating import Jinja2Templates
 from typing import Optional
 
@@ -32,6 +32,11 @@ async def index(
             "ip": ip,
         },
     )
+
+
+@app.get("/favicon.ico", response_class=FileResponse)
+async def get_favicon():
+    return FileResponse("favicon.ico")
 
 
 @app.get("/api/v1/")
