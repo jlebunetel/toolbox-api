@@ -59,7 +59,7 @@ async def showmyip(
     }
 
 
-@app.get("/api/v1/ddns/")
+# @app.get("/api/v1/ddns/")
 async def ddns(
     request: Request,
     # alwaysdata add to headers X-Real-IP, which takes the value of the client’s IP
