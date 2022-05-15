@@ -107,7 +107,7 @@ async def ddns(
         "value": ip,
     }
 
-    r = requests.put(
+    _ = requests.put(
         address,
         auth=credentials,
         data=json.dumps(data),
