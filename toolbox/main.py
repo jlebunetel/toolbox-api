@@ -6,7 +6,7 @@ from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
 from typing import Optional
 
-from toolbox.settings import ACCOUNT, APIKEY, DDNS_TOKEN
+from toolbox import settings
 from toolbox.star import get_next_bus
 
 app = FastAPI()
@@ -76,7 +76,7 @@ async def ddns(
     # https://api.alwaysdata.com/v1/record/doc/
     # Synology requires that the response body contains the string "good"
 
-    if token != DDNS_TOKEN:
+    if token != settings.DDNS_TOKEN:
         raise HTTPException(status_code=403, detail="token not valid!")
 
     if not domain:
@@ -88,7 +88,9 @@ async def ddns(
     address = "https://api.alwaysdata.com/v1/record/{record}/".format(record=record)
 
     credentials = (
-        "{apikey} account={account}".format(apikey=APIKEY, account=ACCOUNT),
+        "{apikey} account={account}".format(
+            apikey=settings.APIKEY, account=settings.ACCOUNT
+        ),
         "",
     )
 
