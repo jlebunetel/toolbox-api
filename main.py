@@ -119,3 +119,15 @@ async def ddns(
         "value": ip,
         "detail": "good",
     }
+
+
+@app.get("/api/v1/lametric/")
+async def lametric():
+    # https://help.lametric.com/support/solutions/articles/6000225467-my-data-diy
+    return {
+        "frames": [
+            {
+                "text": "Hello World",
+            }
+        ]
+    }
