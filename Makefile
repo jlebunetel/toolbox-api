@@ -13,7 +13,7 @@ install: ## Installs or updates dependencies.
 
 .PHONY: serve
 serve: ## Starts the development server.
-	venv/bin/uvicorn main:app --reload
+	venv/bin/uvicorn toolbox:app --reload --host 0.0.0.0
 
 .PHONY: help
 help: ## Lists all the available commands.
