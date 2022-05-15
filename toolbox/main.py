@@ -3,13 +3,15 @@ import requests
 
 from fastapi import FastAPI, Header, HTTPException, Request
 from fastapi.responses import FileResponse, HTMLResponse
+from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from typing import Optional
-
 from toolbox import settings
 from toolbox.star import get_next_bus
 
 app = FastAPI()
+
+app.mount("/static", StaticFiles(directory=settings.STATIC_DIR), name="static")
 
 templates = Jinja2Templates(directory=settings.TEMPLATES_DIR)
 

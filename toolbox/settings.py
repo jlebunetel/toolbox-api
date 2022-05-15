@@ -17,4 +17,5 @@ DDNS_TOKEN = str(os.environ["DDNS_TOKEN"])
 # Paths
 BASE_DIR = Path(__file__).resolve().parents[1]
 FAVICON = BASE_DIR / "favicon.ico"
+STATIC_DIR = BASE_DIR / "static"
 TEMPLATES_DIR = BASE_DIR / "templates"

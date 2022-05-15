@@ -5,7 +5,24 @@
     <meta charset="utf-8">
     <meta name="robots" content="noindex, nofollow">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+
     <title>Toolbox</title>
+    <meta name="description" content="A set of useful tools."></meta>
+    <meta name="author" content="Julien Lebunetel"></meta>
+
+    <meta property="og:title" content="Toolbox"></meta>
+    <meta property="og:description" content="A set of useful tools."></meta>
+    <meta property="og:type" content="website"></meta>
+    <meta property="og:image" content="{{ url_for('static', path='/3823.jpg') }}"></meta>
+    <meta property="og:url" content="https://toolbox.blink-studio.com/"></meta>
+
+    <meta name="twitter:card" content="summary"></meta>
+    <meta name="twitter:creator" content="@jlebunetel"></meta>
+    <meta name="twitter:title" content="Toolbox"></meta>
+    <meta name="twitter:description" content="A set of useful tools."></meta>
+    <meta name="twitter:image" content="{{ url_for('static', path='/3823.jpg') }}"></meta>
+    <meta name="twitter:image:alt" content="A set of useful tools."></meta>
+
     <link rel="icon" href="favicon.ico">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
@@ -15,17 +32,24 @@
     <section class="hero is-fullheight">
         <div class="hero-body">
             <div class="container has-text-centered">
-                <h1 class="title">
-                    <span class="icon-text">
-                        <span class="icon">
-                            <i class="fa-solid fa-toolbox"></i>
-                        </span>
-                        <span>Toolbox</span>
-                    </span>
-                </h1>
-                <p class="subtitle">
-                    Your IP address is: <span class="has-text-weight-bold has-text-link">{{ ip }}</span>
-                </p>
+                <div class="columns is-centered">
+                    <div class="column is-three-quarters-tablet is-half-desktop">
+                        <h1 class="title">
+                            <span class="icon-text">
+                                <span class="icon">
+                                    <i class="fa-solid fa-toolbox"></i>
+                                </span>
+                                <span>Toolbox</span>
+                            </span>
+                        </h1>
+                        <figure class="image">
+                            <img src="{{ url_for('static', path='/3823.jpg') }}" width="500">
+                        </figure>
+                        <p class="subtitle">
+                            Your IP address is: <span class="has-text-weight-bold has-text-link">{{ ip }}</span>
+                        </p>
+                    </div>
+                </div>
             </div>
         </div>
 
