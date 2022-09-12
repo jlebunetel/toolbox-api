@@ -1,19 +1,34 @@
+# Environment variables
+# If the following required environment variables are not set,
+# we try to get them from the .env file:
+
+ifndef PORT
+	PORT=$$(grep '^PORT=' .env | cut -d= -f2-)
+endif
+
+# Commands
+
 default: help
 
 .PHONY: venv
 venv: ## Creates a virtual environment.
-	python3.9 -m venv venv
+	python3 -m venv venv
 
 .PHONY: install
 install: ## Installs or updates dependencies.
-	venv/bin/pip install --upgrade pip
-	venv/bin/pip install --upgrade pip-tools
+	venv/bin/pip install --upgrade pip wheel setuptools pip-tools
 	venv/bin/pip-compile --upgrade
 	venv/bin/pip-sync
 
+.PHONY: clean-python
+clean-python: ## Cleans Python environment.
+	find . -path "*.pyc" -not -path "./venv*" -delete
+	find . -path "*/__pycache__" -not -path "./venv*" -delete
+
 .PHONY: serve
 serve: ## Starts the development server.
-	venv/bin/uvicorn toolbox:app --reload --host 0.0.0.0
+	# venv/bin/uvicorn toolbox:app --reload --host 0.0.0.0 --port ${PORT}
+	venv/bin/uvicorn toolbox:app --host 0.0.0.0 --port ${PORT}
 
 .PHONY: favicon
 favicon: ## Builds favicon.ico from favicon.svg.
