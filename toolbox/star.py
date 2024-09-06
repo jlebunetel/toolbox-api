@@ -1,16 +1,16 @@
 import logging
-import requests
-
 from datetime import datetime
 from enum import Enum
-from pydantic import BaseModel, validator
 from typing import Union
+
+import requests
+from pydantic import BaseModel, field_validator
 
 logger = logging.getLogger(__name__)
 
 
 class City(str, Enum):
-    rennes = "rennes"
+    RENNES = "rennes"
 
 
 class Horaire(BaseModel):
@@ -20,25 +20,26 @@ class Horaire(BaseModel):
     nomarret: str  # "Gares"
     depart: str  # "2022-05-15T15:19:00+02:00"
 
-    @validator("depart")
-    def convert_time(cls, v):
-        depart = v
-        depart_datetime: datetime = datetime.fromisoformat(depart)
-        depart_short: str = depart_datetime.strftime("%H:%M")
+    @field_validator("depart")
+    @classmethod
+    def convert_time(cls, v: str):
+        depart_datetime = datetime.fromisoformat(v)
+        depart_short = depart_datetime.strftime("%H:%M")
         return depart_short
 
     def __str__(self):
-        return "Départ du bus {nomcourtligne} à l'arrêt {nomarret} direction {destination} à {depart}".format(
-            nomcourtligne=self.nomcourtligne,
-            nomarret=self.nomarret,
-            destination=self.destination,
-            depart=self.depart,
+        return (
+            f"Départ du bus {self.nomcourtligne} à l'arrêt {self.nomarret} direction "
+            f"{self.destination} à {self.depart}"
         )
 
 
 def get_next_bus(idarret: str = "1259", limit: int = 3) -> Union[list[Horaire], None]:
     # https://data.explore.star.fr/api/v2/console
-    url = "https://data.explore.star.fr/api/v2/catalog/datasets/tco-bus-circulation-passages-tr/records/"
+    url = (
+        "https://data.explore.star.fr/"
+        "api/v2/catalog/datasets/tco-bus-circulation-passages-tr/records/"
+    )
 
     headers = {
         "content-type": "application/json",
@@ -46,7 +47,7 @@ def get_next_bus(idarret: str = "1259", limit: int = 3) -> Union[list[Horaire], 
 
     payload = {
         # "where": 'idarret = "1259" and idligne = "0005"',
-        "where": 'idarret = "{}"'.format(idarret),
+        "where": f'idarret = "{idarret}"',
         "order_by": "depart",
         "timezone": "Europe/Paris",
         # "select": "nomcourtligne,destination,idarret,nomarret,depart",
@@ -57,11 +58,12 @@ def get_next_bus(idarret: str = "1259", limit: int = 3) -> Union[list[Horaire], 
         url,
         headers=headers,
         params=payload,
+        timeout=1000,
     )
     logger.debug("url: %s", r.url)
     logger.debug("status code: %s", r.status_code)
 
-    if r.status_code != requests.codes.ok:
+    if r.status_code != requests.codes.ok:  # pylint: disable=no-member
         return None
 
     horaires = []

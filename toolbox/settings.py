@@ -1,25 +1,24 @@
 import os
-
 from io import TextIOWrapper
 from pathlib import Path
 from typing import Generator
 
 
-def reader(stream: TextIOWrapper) -> Generator[tuple[str, str], None, None]:
-    for row in filter(lambda row: row.strip() and not row.startswith("#"), stream):
+def reader(text_stream: TextIOWrapper) -> Generator[tuple[str, str], None, None]:
+    for row in filter(lambda row: row.strip() and not row.startswith("#"), text_stream):
         # void rows and rows starting with '#' are skiped
 
         # remove the endline character '\n'
         cleaned_row: str = row.rstrip()
 
         # get key value tuple
-        key, value = cleaned_row.split("=", 1)
+        k, v = cleaned_row.split("=", 1)
 
         # remove leading and trailing '"' characters
-        value = value.strip('"')
+        v = v.strip('"')
 
         # yield cleaned values
-        yield key, value
+        yield k, v
 
 
 # Loads environment variables from .env file (if not already set):

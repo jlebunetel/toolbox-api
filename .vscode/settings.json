@@ -1,0 +1,91 @@
+{
+    "[html]": {
+        "editor.formatOnSave": true,
+        "editor.defaultFormatter": "vscode.html-language-features"
+    },
+    "[python]": {
+        "editor.codeActionsOnSave": {
+            "source.organizeImports": "explicit"
+        },
+        "editor.defaultFormatter": "charliermarsh.ruff",
+        "editor.formatOnSave": true,
+        "editor.rulers": [
+            88
+        ]
+    },
+    "editor.rulers": [
+        80
+    ],
+    "django.i18n": true,
+    "django.snippets.use": true,
+    "emmet.includeLanguages": {
+        "django-html": "html"
+    },
+    "html.format.templating": false,
+    "mypy-type-checker.interpreter": [
+        "${workspaceFolder}/venv/bin/python"
+    ],
+    "mypy-type-checker.path": [
+        "${workspaceFolder}/venv/bin/mypy"
+    ],
+    "mypy-type-checker.ignorePatterns": [
+        "venv/**",
+        ".mypy_cache/**"
+    ],
+    "mypy-type-checker.reportingScope": "workspace",
+    "pylint.path": [
+        "${workspaceFolder}/venv/bin/pylint"
+    ],
+    "python.analysis.diagnosticMode": "workspace",
+    "python.analysis.exclude": [
+        "temp",
+        "venv"
+    ],
+    "python.analysis.extraPaths": [
+        "${workspaceFolder}/apps"
+    ],
+    "python.analysis.logLevel": "Information",
+    "python.analysis.typeCheckingMode": "off",
+    "python.createEnvironment.contentButton": "hide",
+    "python.defaultInterpreterPath": "${workspaceFolder}/venv/bin/python",
+    "python.terminal.activateEnvironment": false,
+    "python.terminal.activateEnvInCurrentTerminal": false,
+    "python.terminal.executeInFileDir": false,
+    "python.terminal.focusAfterLaunch": true,
+    "ruff.enable": true,
+    "ruff.fixAll": true,
+    "ruff.format.args": [
+        "--config=${workspaceFolder}/pyproject.toml"
+    ],
+    "ruff.ignoreStandardLibrary": true,
+    "ruff.interpreter": [
+        "${workspaceFolder}/venv/bin/python"
+    ],
+    "ruff.lint.args": [
+        "--config=${workspaceFolder}/pyproject.toml"
+    ],
+    "ruff.lint.enable": true,
+    "ruff.lint.run": "onSave",
+    "ruff.organizeImports": true,
+    "ruff.path": [
+        "${workspaceFolder}/venv/bin/ruff"
+    ],
+    "ruff.showNotifications": "always",
+    "ruff.trace.server": "messages",
+    "workbench.colorCustomizations": {
+        "statusBar.background": "#eb6864"
+    },
+    "[toml]": {
+        "editor.defaultFormatter": "tamasfe.even-better-toml",
+        "editor.formatOnSave": true
+    },
+    "[json]": {
+        "editor.formatOnSave": true
+    },
+    "[yaml]": {
+        "editor.formatOnSave": true
+    },
+    "[markdown]": {
+        "editor.formatOnSave": true
+    }
+}

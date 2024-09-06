@@ -1,0 +1,115 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "toolbox-api"
+dynamic = ["version"]
+requires-python = ">= 3.12"
+dependencies = [
+    "fastapi",
+    "jinja2",
+    "requests",
+    "rich",
+    "types-requests",
+    "uvicorn[standard]",
+]
+authors = [{ name = "Julien Lebunetel", email = "julien@lebunetel.com" }]
+maintainers = [{ name = "Julien Lebunetel", email = "julien@lebunetel.com" }]
+description = "A toolbox web API using FastAPI on alwaysdata."
+readme = { file = "README.md", content-type = "text/markdown" }
+license = { file = "LICENSE" }
+keywords = ["FastAPI", "sandbox"]
+classifiers = [
+    "Development Status :: 1 - Planning",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3.12",
+    "Framework :: FastAPI",
+    "Operating System :: POSIX :: Linux",
+    "Environment :: Web Environment",
+]
+
+[project.optional-dependencies]
+dev = [
+    "commitizen",
+    "mypy",
+    "pip-tools",
+    "pre-commit",
+    "pylint",
+    "pylint-django",
+    "ruff",
+]
+test = ["pytest", "pytest-cov", "pytest-xdist[psutil]"]
+
+[project.urls]
+Homepage = "https://toolbox.blink-studio.com/"
+Repository = "https://github.com/jlebunetel/toolbox-api"
+Issues = "https://github.com/jlebunetel/toolbox-api/issues"
+Changelog = "https://github.com/jlebunetel/toolbox-api/blob/main/CHANGELOG.md"
+
+[tool.pylama]
+format = "pylint"
+linters = "eradicate,mccabe,pycodestyle,pyflakes,radon,vulture"
+
+[tool.pylama.linter.vulture]
+min-confidence = 65
+
+[tool.mypy]
+packages = ["toolbox"]
+ignore_missing_imports = true
+cache_dir = "/dev/null"
+
+[tool.pylint]
+jobs = 1
+recursive = true
+output-format = "colorized"
+disable = """
+    duplicate-code,
+    missing-class-docstring,
+    missing-function-docstring,
+    missing-module-docstring
+"""
+
+[tool.ruff]
+line-length = 88
+indent-width = 4
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["E", "F"]
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+skip-magic-trailing-comma = false
+line-ending = "auto"
+
+[tool.pip-tools]
+generate-hashes = false
+upgrade = true
+strip-extras = true
+
+[tool.pytest.ini_options]
+addopts = """
+--numprocesses=auto \
+--cov=./ \
+--cov-report=term:skip-covered \
+--cov-report=html \
+"""
+testpaths = ["tests"]
+
+[tool.commitizen]
+name = "cz_conventional_commits"
+version = "0.1.0"
+version_files = [
+    "pyproject.toml:version",
+    "README.md:version-",
+    "toolbox/__init__.py:__version__",
+]
+tag_format = "$version"
+update_changelog_on_bump = true
+annotated_tag = true
+
+[tool.hatch.version]
+path = "toolbox/__init__.py"

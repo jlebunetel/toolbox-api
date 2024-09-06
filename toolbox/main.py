@@ -1,11 +1,11 @@
 import json
-import requests
+from typing import Optional
 
+import requests
 from fastapi import FastAPI, Header, HTTPException, Path, Request
 from fastapi.responses import FileResponse, HTMLResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
-from typing import Optional
 
 from toolbox import settings
 from toolbox.lametric import LaMetricFrame, LaMetricFrames
@@ -58,11 +58,13 @@ async def showmyip(
 ):
     """Returns my IP address"""
 
-    ip = x_real_ip if x_real_ip else request.client.host
+    if x_real_ip:
+        return {"ip": x_real_ip}
 
-    return {
-        "ip": ip,
-    }
+    if request.client:
+        return {"ip": request.client.host}
+
+    return {"ip": ""}
 
 
 @app.get("/api/v1/ddns/", include_in_schema=False)
@@ -91,20 +93,20 @@ async def ddns(
     if not record:
         raise HTTPException(status_code=422, detail="record not valid!")
 
-    address = "https://api.alwaysdata.com/v1/record/{record}/".format(record=record)
+    address = f"https://api.alwaysdata.com/v1/record/{record}/"
 
     credentials = (
-        "{apikey} account={account}".format(
-            apikey=settings.APIKEY, account=settings.ACCOUNT
-        ),
+        f"{settings.APIKEY} account={settings.ACCOUNT}",
         "",
     )
 
     if not ip:
         if x_real_ip:
             ip = x_real_ip
-        else:
+        elif request.client:
             ip = request.client.host
+        else:
+            ip = "0.0.0.0"
 
     data = {
         "domain": str(domain),
@@ -117,6 +119,7 @@ async def ddns(
         address,
         auth=credentials,
         data=json.dumps(data),
+        timeout=1000,
     )
 
     return {
@@ -156,6 +159,7 @@ async def lametric_next_bus(
     limit: int = 3,
 ) -> LaMetricFrames:
     """Displays bus information on LaMetric"""
+    del city_id
 
     horaires = get_next_bus(idarret=stop_id, limit=limit)
 
@@ -173,6 +177,7 @@ async def lametric_next_bus(
             frames.frames.append(
                 LaMetricFrame(
                     text=" ".join([horaire.nomcourtligne, horaire.depart]),
+                    icon="996",
                 )
             )
     else:
