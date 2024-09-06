@@ -6,11 +6,11 @@ class LaMetricFrame(BaseModel):
     https://help.lametric.com/support/solutions/articles/6000225467-my-data-diy"""
 
     text: str = Field(
-        None,
+        default="",
         description="Text that will be displayed. If it is too long – it will scroll.",
     )
     icon: str = Field(
-        None,
+        default="",
         description="Can be an ID of an icon (go to https://developer.lametric.com/icon"
         "s to browse for icons and know their IDs).",
     )

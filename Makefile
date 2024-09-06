@@ -20,6 +20,29 @@ install: ## Installs or updates dependencies.
 	venv/bin/pip-compile --upgrade
 	venv/bin/pip-sync
 
+.PHONY: build-requirements
+build-requirements: ## Builds requirements files.
+	venv/bin/pip install --upgrade pip
+	venv/bin/pip-compile \
+		--output-file=requirements.txt \
+		pyproject.toml
+	venv/bin/pip-compile \
+		--extra=dev \
+		--output-file=requirements-dev.txt \
+		pyproject.toml
+	venv/bin/pip-compile \
+		--extra=test \
+		--output-file=requirements-test.txt \
+		pyproject.toml
+
+.PHONY: sync-dev
+sync-dev: ## Syncs dev and test requirements.
+	venv/bin/pip install --upgrade pip
+	venv/bin/pip-sync \
+		requirements.txt \
+		requirements-dev.txt \
+		requirements-test.txt
+
 .PHONY: clean-python
 clean-python: ## Cleans Python environment.
 	find . -path "*.pyc" -not -path "./venv*" -delete
